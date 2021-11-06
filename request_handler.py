@@ -3,7 +3,8 @@ from animals import (
     get_all_animals,
     get_single_animal,
     get_animals_by_location,
-    get_animals_by_status
+    get_animals_by_status,
+    delete_animal
 )
 from employees import (
     get_all_employees,
@@ -144,6 +145,23 @@ class HandleRequests(BaseHTTPRequestHandler):
     # It handles any PUT request.
     def do_PUT(self):
         self.do_POST()
+
+    def do_DELETE(self):
+        self._set_headers(204)
+
+        (resource, id) = self.parse_url(self.path)
+
+        # Delete a single animal from the list
+        if resource == "animals":
+            delete_animal(id)
+        elif resource == "locations":
+            delete_location(id)
+        elif resource == "employees":
+            delete_employee(id)
+        elif resource == "customers":
+            delete_customer(id)
+        # Encode the new animal and send in response
+        self.wfile.write("".encode())
 
 
 # This function is not inside the class. It is the starting
